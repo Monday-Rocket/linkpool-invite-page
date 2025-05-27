@@ -1,96 +1,118 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>공유폴더 초대</title>
-  <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #FFFFFF;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      height: 100vh;
-      font-family: 'Pretendard', sans-serif;
-    }
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      flex-grow: 1;
-      text-align: center;
-    }
-    img {
-      width: 200px; /* 이미지 크기는 예시입니다. 필요 시 조정하세요. */
-      height: auto;
-      margin-bottom: 20px;
-    }
-    .title {
-      font-weight: 700;
-      font-size: 22px;
-      letter-spacing: -0.2px;
-      color: #000000;
-      margin-bottom: 12px;
-    }
-    .description {
-      font-weight: 500;
-      font-size: 16px;
-      letter-spacing: -0.1px;
-      line-height: 24px;
-      color: #000000;
-      white-space: pre-line;
-    }
-    .button {
-      width: calc(100% - 48px); /* 좌우 마진 24px */
-      max-width: 100%;
-      height: 56px;
-      background-color: #804DFF;
-      color: #FFFFFF;
-      font-family: 'Pretendard', sans-serif;
-      font-weight: 700;
-      font-size: 16px;
-      border: none;
-      border-radius: 12px;
-      margin: 0 24px 24px 24px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>공유폴더 초대</title>
+    <link href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #FFFFFF;
+            height: 100dvh;
+            /* 동적 뷰포트 높이 사용 */
+            overflow: hidden;
+            /* 불필요한 스크롤 방지 */
+            font-family: 'Pretendard', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            text-align: center;
+            padding-bottom: env(safe-area-inset-bottom);
+            /* 네비게이션 바 고려 */
+        }
+
+        img {
+            width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-weight: 700;
+            font-size: 22px;
+            letter-spacing: -0.2px;
+            color: #000000;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            font-weight: 500;
+            font-size: 16px;
+            letter-spacing: -0.1px;
+            line-height: 24px;
+            color: #000000;
+            white-space: pre-line;
+        }
+
+        .button {
+            width: calc(100% - 48px);
+            max-width: 100%;
+            height: 56px;
+            background-color: #804DFF;
+            color: #FFFFFF;
+            font-family: 'Pretendard', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            border: none;
+            border-radius: 12px;
+            margin: 0 24px 24px 24px;
+            padding-bottom: env(safe-area-inset-bottom);
+            /* 네비게이션 바 위로 버튼 위치 */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: sticky;
+            bottom: env(safe-area-inset-bottom);
+            /* 하단 네비게이션 바 고려 */
+        }
+    </style>
 </head>
+
 <body>
-  <div class="container">
-    <img src="./airplane.png" alt="airplane">
-    <div class="title">공유폴더에 참여하시겠어요?</div>
-    <div class="description">test</div>
-  </div>
-  <button class="button" onclick="joinFolder()">참여하기</button>
+    <div class="container">
+        <img src="./airplane.png" alt="airplane">
+        <div class="title">공유폴더에 참여하시겠어요?</div>
+        <div class="description">test</div>
+    </div>
+    <button class="button" onclick="joinFolder()">참여하기</button>
 
-  <script>
-    // URL에서 쿼리 파라미터 가져오기
-    const urlParams = new URLSearchParams(window.location.search);
-    const nickname = urlParams.get('nickname') || '';
-    const token = urlParams.get('token') || '';
+    <script>
+        // URL에서 쿼리 파라미터 가져오기
+        const urlParams = new URLSearchParams(window.location.search);
+        const nickname = urlParams.get('nickname') || '';
+        const token = urlParams.get('token') || '';
 
-    // 닉네임 동적 삽입
-    const descriptionElement = document.getElementsByClassName('description')[0];
-    descriptionElement.textContent = `${nickname}님이 공유폴더에 참여하도록\n회원님을 초대했어요.`;
+        // 닉네임 동적 삽입
+        const descriptionElement = document.getElementsByClassName('description')[0];
+        descriptionElement.textContent = `${nickname}님이 공유폴더에 참여하도록\n회원님을 초대했어요.`;
 
-    // 버튼 클릭 시 딥링크 실행
-    function joinFolder() {
-      if (token) {
-        const deepLink = `linkpool://boring-km.dev?token=${encodeURIComponent(token)}`;
-        window.location.href = deepLink;
-      } else {
-        alert('토큰이 없습니다. 유효한 초대 링크를 확인해주세요.');
-      }
-    }
-  </script>
+        // 버튼 클릭 시 딥링크 실행
+        function joinFolder() {
+            if (token) {
+                const deepLink = `linkpool://boring-km.dev?token=${encodeURIComponent(token)}`;
+                window.location.href = deepLink;
+            } else {
+                alert('토큰이 없습니다. 유효한 초대 링크를 확인해주세요.');
+            }
+        }
+    </script>
 </body>
+
 </html>
