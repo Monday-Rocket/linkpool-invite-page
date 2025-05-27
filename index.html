@@ -91,7 +91,7 @@
         <div class="title">공유폴더에 참여하시겠어요?</div>
         <div class="description">test</div>
     </div>
-    <button class="button" onclick="joinFolder()">참여하기</button>
+    <button class="button" onclick="launchApp()">참여하기</button>
 
     <script>
         // URL에서 쿼리 파라미터 가져오기
@@ -110,6 +110,48 @@
                 window.location.href = deepLink;
             } else {
                 alert('토큰이 없습니다. 유효한 초대 링크를 확인해주세요.');
+            }
+        }
+
+        // timerRef를 일반 변수로 선언
+        let timerRef = null;
+
+        // visibilitychange 이벤트 핸들러
+        function handler() {
+            if (timerRef) {
+                clearTimeout(timerRef);
+            }
+        }
+
+        // 앱 실행 함수
+        function launchApp() {
+            // (1) 주어진 딥링크로 앱을 실행
+            joinFolder();
+
+            // (2) 일정 시간 동안 앱이 실행되지 않으면 onLaunchFail 호출
+            timerRef = setTimeout(() => {
+                onLaunchFail();
+            }, 2000);
+        }
+
+        // 페이지 로드 시 visibilitychange 이벤트 리스너 등록
+        window.addEventListener('visibilitychange', handler);
+
+        // onLaunchFail 함수 (예시, 실제 구현 필요)
+        function onLaunchFail() {
+            // 플랫폼 감지
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isAndroid = userAgent.includes('android');
+            const isIOS = /iphone|ipad|ipod/.test(userAgent);
+
+
+            // 앱이 설치되지 않은 경우 앱스토어로 리디렉션
+            if (isAndroid) {
+                console.log('Redirecting to Google Play Store');
+                window.location.href = 'https://play.google.com/store/apps/details?id=com.mr.ac_project_app'; // 실제 패키지 이름으로 교체
+            } else {
+                console.log('Redirecting to Apple App Store');
+                window.location.href = 'https://apps.apple.com/app/id1644108674'; // 실제 앱 ID로 교체
             }
         }
     </script>
