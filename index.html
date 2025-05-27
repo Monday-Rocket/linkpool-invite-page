@@ -109,6 +109,7 @@
                 const deepLink = `linkpool://boring-km.dev?token=${encodeURIComponent(token)}`;
                 window.location.href = deepLink;
             } else {
+                clearTimeout(timerRef);
                 alert('토큰이 없습니다. 유효한 초대 링크를 확인해주세요.');
             }
         }
