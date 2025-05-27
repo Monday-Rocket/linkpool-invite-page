@@ -109,7 +109,7 @@
                 const deepLink = `linkpool://boring-km.dev?token=${encodeURIComponent(token)}`;
                 window.location.href = deepLink;
             } else {
-                clearTimeout(timerRef);
+                clearTimeout(timerRef); // 타이머 정리
                 alert('토큰이 없습니다. 유효한 초대 링크를 확인해주세요.');
             }
         }
@@ -126,13 +126,15 @@
 
         // 앱 실행 함수
         function launchApp() {
-            // (1) 주어진 딥링크로 앱을 실행
-            joinFolder();
 
-            // (2) 일정 시간 동안 앱이 실행되지 않으면 onLaunchFail 호출
+            // (1) 일정 시간 동안 앱이 실행되지 않으면 onLaunchFail 호출
             timerRef = setTimeout(() => {
                 onLaunchFail();
             }, 2000);
+
+            // (2) 주어진 딥링크로 앱을 실행
+            joinFolder();
+
         }
 
         // 페이지 로드 시 visibilitychange 이벤트 리스너 등록
