@@ -141,6 +141,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const nickname = urlParams.get('nickname') || '';
         const token = urlParams.get('token') || '';
+        const folderId = urlParams.get('id') || '';
 
         // 닉네임 동적 삽입
         const descriptionElement = document.getElementsByClassName('description')[0];
@@ -165,7 +166,7 @@
 
             // (2) 주어진 딥링크로 앱을 실행
             if (token) {
-                const deepLink = `linkpool://boring-km.dev?token=${encodeURIComponent(token)}`;
+                const deepLink = `linkpool://boring-km.dev?id=${folderId}&token=${encodeURIComponent(token)}`;
                 window.location.href = deepLink;
             } else {
                 clearTimeout(timerRef); // 타이머 정리
